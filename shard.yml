@@ -1,0 +1,21 @@
+name: qt_v1
+version: 0.1.0
+
+authors:
+  - NPN <me@npn.am>
+
+targets:
+  qt_v1:
+    main: src/qt_v1.cr
+
+crystal: '>= 1.10.0'
+
+license: MIT
+
+dependencies:
+  crorm:
+    github: chi-vi/crorm
+    version: 0.4.2
+
+  action-controller:
+    github: spider-gazelle/action-controller

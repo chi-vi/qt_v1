@@ -1,27 +1,47 @@
 # qt_v1
 
-TODO: Write a description here
+Code của máy dịch cũ Chivi
 
-## Installation
+## Cài đặt
 
-TODO: Write installation instructions here
+Vào Discord hỏi.
 
-## Usage
+## Cách dùng
 
-TODO: Write usage instructions here
+### Dịch nhanh:
 
-## Development
+Gọi POST request tới `http://localhost:6666/qtran` với body của request là text muốn dịch.
 
-TODO: Write development instructions here
+Các lựa chọn:
 
-## Contributing
+####: Dùng từ điển bộ truyện:
+thêm param `wn_id=?` vào địa chỉ, ví dụ `http://localhost:6666/qtran?wn_id=666`
 
-1. Fork it (<https://github.com/your-github-user/qt_v1/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+####: Dịch đặc biệt tên chương:
+thêm param `title=1` vào địa chỉ, ví dụ: `http://localhost:6666/qtran?wn_id=666&title=1`
 
-## Contributors
+có thể thay vào bằng `title=2` nếu muốn tất cả các dòng đều áp dụng cách dịch tên chương.
 
-- [NPN](https://github.com/your-github-user) - creator and maintainer
+### Thêm từ mới:
+
+Gọi POST request tới `http://localhost:6666/terms`, body là một JSON với format:
+
+```
+{
+  key: string
+  val: string
+  ptag: string
+  prio: number
+  dic: number
+  tab: number
+}
+```
+
+trong đó:
+
+- key: text tiếng trung gốc
+- val: nghĩa tiếng việt
+- ptag: từ loại của nghĩa
+- prio: mức độ ưu tiên của từ trong câu (tốt nhất để mặc định)
+- dic: id từ điển, trong đó: -1 là từ điển chung cho tất cả bộ truyện, 0 là từ điển dịch nhanh, 1+ là từ điển bộ truyện
+- tab: (cần xóa) lưu vào từ điển tạm thời hoặc chính thức, dùng cho hệ thống cũ

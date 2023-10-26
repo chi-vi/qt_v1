@@ -2,7 +2,7 @@ require "crorm"
 require "./dict"
 
 class QT::Zvterm
-  class_getter db_path = "terms.db"
+  class_getter db_path = "data/terms.db"
 
   class_getter init_sql = <<-SQL
     CREATE TABLE IF NOT EXISTS defns (

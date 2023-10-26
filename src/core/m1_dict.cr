@@ -47,8 +47,6 @@ class QT::MtTrie
 end
 
 class QT::MtDict
-  DB_PATH = "var/mtapp/v1dic/v1_defns.dic"
-
   MAINS = {} of Int32 => self
   AUTOS = {} of Int32 => self
   USERS = {} of String => self
@@ -63,10 +61,6 @@ class QT::MtDict
 
   def self.regular_user(uname : String) : self
     USERS["@#{uname}"] ||= new(4).load_user!(-1, uname)
-  end
-
-  class_getter regular_init : self do
-    new(5).load_init!
   end
 
   def self.unique_main(wn_id : Int32) : self
@@ -92,7 +86,7 @@ class QT::MtDict
   end
 
   private def open_db(&)
-    DB.open("sqlite3:#{DB_PATH}") { |db| yield db }
+    DB.open("sqlite3:data/terms.db") { |db| yield db }
   end
 
   def load!(dic : Int32) : self
@@ -123,24 +117,6 @@ class QT::MtDict
       db.query_each(sql, *args) do |rs|
         key, val, ptag, prio = rs.read(String, String, String, Int32)
         add_term(key, val, ptag, prio)
-      end
-    end
-
-    self
-  end
-
-  def load_init!
-    DB.open("sqlite3:var/mtdic/fixed/v1_init.dic") do |db|
-      sql = "select zstr, tags, mtls from terms where _flag >= 0 and mtls <> ''"
-
-      db.query_each(sql) do |rs|
-        key, tags, mtls = rs.read(String, String, String)
-
-        val = mtls.split(/[|ǀ\t]/).first
-        tag = PosTag.map_ctb(tags.split(' ')[0], key)
-
-        node = @trie.find!(key)
-        node.term = MtTerm.new(key, val, tag: tag, dic: @lbl, prio: 1)
       end
     end
 

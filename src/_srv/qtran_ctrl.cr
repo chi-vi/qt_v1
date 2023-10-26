@@ -5,10 +5,13 @@ class QT::QtranCtrl < AC::Base
 
   @[AC::Route::POST("/")]
   def qtran(wn_id : Int32 = 0, title : Int32 = 0)
-    qcore = MtCore.init(wn_id)
+    input = request.body.try(&.gets_to_end) || ""
+    lines = input.split(/\R/, remove_empty: true)
 
     otext = String.build do |io|
-      _read_body.split(/\R+/, remove_empty: true).each_with_index do |line, i|
+      qcore = MtCore.init(wn_id)
+      lines.each_with_index do |line, i|
+        line = line.strip
         if title == 2 || (title == 1 && i == 0)
           qcore.cv_title(line).to_txt(io)
         else
@@ -18,5 +21,8 @@ class QT::QtranCtrl < AC::Base
     end
 
     render text: otext
+  rescue ex
+    Log.error(exception: ex) { ex.message }
+    render 500, ex.message
   end
 end

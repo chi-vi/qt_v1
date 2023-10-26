@@ -12,6 +12,8 @@ Vào Discord hỏi.
 
 Gọi POST request tới `http://localhost:6666/qtran` với body của request là text muốn dịch.
 
+_Lưu ý: Cần thêm header "Content-Type: text/plain" khi gọi request._
+
 Các lựa chọn:
 
 ####: Dùng từ điển bộ truyện:
@@ -25,6 +27,8 @@ có thể thay vào bằng `title=2` nếu muốn tất cả các dòng đều �
 ### Thêm từ mới:
 
 Gọi POST request tới `http://localhost:6666/terms`, body là một JSON với format:
+
+_Lưu ý: Cần thêm header "Content-Type: application/json" khi gọi request._
 
 ```
 {

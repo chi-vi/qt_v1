@@ -4,8 +4,6 @@ require "./mt_node/mt_term"
 require "./pos_tag"
 
 class QT::SpDict
-  DB_PATH = "var/mtapp/v1dic/v1_defns.dic"
-
   def initialize(@df_ptag : PosTag, @fixed_tag = false)
     @hash = Hash(String, {String, PosTag}).new
   end
@@ -30,7 +28,7 @@ class QT::SpDict
   end
 
   private def open_db(&)
-    DB.open("sqlite3:#{DB_PATH}") { |db| yield db }
+    DB.open("sqlite3:data/terms.db") { |db| yield db }
   end
 
   def load!(dict_id : Int32) : self

@@ -5,16 +5,11 @@ require "./mt_core/*"
 require "../data/*"
 
 class QT::MtCore
-  def self.init(udic : Int32 = 0, user : String = "", init : Bool = false) : self
+  def self.init(udic : Int32 = 0, user : String = "") : self
     dicts = [MtDict.regular_main]
-
     dicts << MtDict.regular_user(user) unless user.empty?
-
-    dicts << MtDict.regular_init if init
-
     dicts << MtDict.unique_main(udic)
     dicts << MtDict.unique_user(udic, user) unless user.empty?
-
     dicts << MtDict.unique_auto(udic)
 
     new(dicts)
